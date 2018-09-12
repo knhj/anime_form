@@ -55,22 +55,36 @@ fclose($file2);
     <body>
     <!-- <p>ファイルの内容を表示します．</p> -->
     <?php  
-    $Aname = array();
-     $animeline = explode("/", $animeArray[0]);
+    // $Aname = array();
+    //  $animeline = explode("/", $animeArray[$i]);
     //  var_dump($animeline);
-   foreach($animeline as $value){
-        $Aname[] = $array[$value];
-    // echo $array[$value];
-    // var_dump ($value);
-    // echo $value;
+//    foreach($animeline as $value){
+//         $Aname[] = $array[$value];
+//     // echo $array[$value];
+//     // echo $value;
+//    }
+$totalAnime= array();
+   for($i=0;$i<count($nameArray);$i++){
+        $Aname = array();
+        $animeline = explode("/", $animeArray[$i]);
+            foreach($animeline as $value){
+            $Aname[] = $array[$value];
+            $totalAnime[] =$array[$value];
+            }
+    // echo $nameArray[$i].",".$mailArray[$i].",".$sexArray[$i].",".implode("/",$Aname)."<br>";  
    }
-   
-    echo $nameArray[0].",".$mailArray[0].",".$sexArray[0].",".implode("/",$Aname)."\n";  
-    
-    
+    // var_dump($totalAnime);
+    $data = array_count_values($totalAnime);
+arsort($data);
+var_dump($data);
+foreach($data as $key=>$value){
+    echo "$key は $value 回出てきました<br>";
+
+}
+
     ?>
-        <ul>
+        <!-- <ul> -->
             <!-- <li><a href="index.php">index.php</a></li> -->
-        </ul>
+        <!-- </ul> -->
     </body>
 </html>

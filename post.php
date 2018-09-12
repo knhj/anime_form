@@ -7,15 +7,38 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <title>アニメアンケート</title>
+		<style>
+		*{
+			list-style:none;
+		}
+		</style>
 	</head>
-	<body>
-	<h1 class="text-center bg-primary text-light font-weight-bold display-4">好きなアニメアンケート</h1>
+	<body style="padding: 50px;">
+	<h1 class="text-center bg-primary text-light font-weight-bold display-4 w200">好きなアニメアンケート</h1>
 		<form action="write.php" method="post">
-			<ul>
-				<li>お名前: <input type="text" name="name"></li>
-				<li>EMAIL: <input type="text" name="mail"></li>
-				<li>性別:<input type="radio" name="sex" value="man" >男
-				<input type="radio" name="sex" value="woman" >女</li>
+			<ul class=”form-group”>
+				<li class=”form-group”>名前: <input class=”form-control” type="text" name="name"></li>
+				<li class=”form-group”>EMAIL: <input class=”form-control” type="text" name="mail"></li>
+				<li class=”form-group”>性別:<input class=”form-control” type="radio" name="sex" value="man" >男
+				<input class=”form-control” type="radio" name="sex" value="woman" >女</li>
+				<div>好きなアニメにチェックをつけてください</div>
+<?php 
+$file = fopen('data/selectedanimes.csv', 'r');
+flock($file, LOCK_EX);			
+    if($file){
+ 		while ($line = fgets($file)) {
+               $splitedline = explode(",",$line);
+  				echo ' <li><input type="checkbox" name="anime[]" value="'.$splitedline[3].'" >'.$splitedline[4].'</li>';
+                echo "\n";
+        }
+    }
+flock($file, LOCK_UN);			// ファイルロック解除
+fclose($file);
+?>
+
+
+
+
 				 <li><input type="checkbox" name="anime[]" value="SGa7km8ze6b" >探偵歌劇 ミルキィホームズ TD</li>
  <li><input type="checkbox" name="anime[]" value="zN6Pst8So5a" >みんな集まれ!ファルコム学園SC</li>
  <li><input type="checkbox" name="anime[]" value="HDJfna97L7u" >アブソリュート・デュオ</li>
@@ -875,7 +898,7 @@
 
 
 			</ul>
-			<input class="btn btn-primary" type="submit" value="送信">
+			<input class="btn btn-primary btn-lg" type="submit" value="送信">
 		</form>
 		
 
