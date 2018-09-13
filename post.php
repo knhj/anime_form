@@ -8,6 +8,11 @@
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <title>アニメアンケート</title>
 		<style>
+		body{
+	        font-family: Roboto, "Yu Gothic Medium", "游ゴシック Medium", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", "メイリオ", sans-serif;
+	        line-height: 1.75;
+        	font-size: 16px;
+        }
 		*{
 			list-style:none;
 		}
@@ -73,7 +78,7 @@
 		</style>
 	</head>
 	<body style="padding: 50px;">
-	<h1 class="text-center bg-primary text-light font-weight-bold display-4 w200">好きなアニメアンケート</h1>
+	<h1 class="text-center bg-primary text-light font-weight-bold display-4">好きなアニメアンケート</h1>
 		<form action="write.php" method="post">
 			<ul >
 				<li class="flex">

@@ -13,10 +13,10 @@ $animeToStr .= '/';
 $animeToStr = rtrim($animeToStr, '/');   
 
 $str = $name.",".$mail.",".$sex.",".$animeToStr;
-$file = fopen("data/data.csv","a");	// ファイル読み込み
-flock($file, LOCK_EX);			// ファイルロック
+$file = fopen("data/data.csv","a");	
+flock($file, LOCK_EX);			
 fwrite($file, $str."\n");
-flock($file, LOCK_UN);			// ファイルロック解除
+flock($file, LOCK_UN);			
 fclose($file);
 ?>
 
@@ -27,12 +27,31 @@ fclose($file);
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
         <title>書き込み画面</title>
+        <style>
+        body{
+	        font-family: Roboto, "Yu Gothic Medium", "游ゴシック Medium", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", "メイリオ", sans-serif;
+	        line-height: 1.75;
+        	font-size: 16px;
+        }
+        .link{
+            font-size:30px;
+            text-align:center;
+            margin: 10px;
+        }
+        h1 {
+            margin-top:100px;
+            text-align:center;
+            margin-bottom:30px;
+        }
+        a {
+            text-decoration: underline;
+        }
+        </style>
     </head>
     <body>
-     <p>ご回答ありがとうございます！！</p> 
-    <a href="read.php">集計結果はこちら</a>
+    <h1>ご回答ありがとうございます！！</h1> 
+    <div class="link"><a href="read.php">人気ランキングはこちら</a></div>
 
 
 
