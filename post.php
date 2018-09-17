@@ -154,39 +154,6 @@ if($status==false) {
 				<li id="year2015" class="btn btn-primary">2015年</li><br>
     			<?=$view?>
 
-<?php 
-
-
-
-// $file = fopen('data/selectedanimes.csv', 'r');
-// flock($file, LOCK_EX);			
-// $is2016 = "true";
-// $is2017 = "true";
-//     if($file){
-//  		while ($line = fgets($file)) {
-// 			   $splitedline = explode(",",$line);
-// 			   if($splitedline[7]== "2016"){
-// 					if($is2016 == "true"){
-// 						echo '<li id="year2016" class="btn btn-primary">2016年</li><br>';
-// 						 echo "\n";
-// 						$is2016 = "false";
-// 					}
-// 			   }
-// 			    if($splitedline[7]== "2017"){
-// 					if($is2017 == "true"){
-// 						echo '<li id="year2017" class="btn btn-primary">2017年</li><br>';
-// 						 echo "\n";
-// 						$is2017 = "false";
-// 					}
-// 			   }
-//   			 echo ' <li class="anititle year'.$splitedline[7].'"><input type="checkbox" name="anime[]" value="'.$splitedline[3].'" >'.$splitedline[4].'</li>';
-//                 echo "\n";
-//         }
-//     }
-// flock($file, LOCK_UN);			// ファイルロック解除
-// fclose($file);
-?>
-
 			</ul>
 			<div class="cent">
 			<input class="btn btn-primary btn-lg" type="submit" value="送信">

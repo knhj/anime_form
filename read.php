@@ -1,43 +1,3 @@
-<?php
-// user data read
-$nameArray = array();
-$mailArray = array();
-$sexArray = array();
-$animeArray = array();
-$count = 0;
-$file = fopen('data/data.csv', 'r');
-flock($file, LOCK_EX);			// ファイルロック
-if($file){
-  while ($line = fgets($file)) {//1行ずつ取得
-    $line = rtrim($line);  
-    $splitedline = explode(",",$line);
-    $nameArray[] = $splitedline[0];
-    $mailArray[] = $splitedline[1];
-    $sexArray[] = $splitedline[2];
-    $animeArray[] = $splitedline[3];
-    $count++;
-  }
-//    var_dump($animeArray);
-}
-flock($file, LOCK_UN);			// ファイルロック解除
-fclose($file);
-
-// animeDB read
-$array = array();
-$file2 = fopen('data/selectedanimes.csv', 'r');
-flock($file2, LOCK_EX);			// ファイルロック
-if($file2){
-  while ($line2 = fgets($file2)) {//1行ずつ取得
-    $splitedline2 = explode(",",$line2);
-    $array += array($splitedline2[3]=>$splitedline2[4]);
-  }
-}
-flock($file2, LOCK_UN);			// ファイルロック解除
-fclose($file2);
-//   var_dump($array);
-
-?>
-
 <html lang="ja">
     <head>
         <meta charset="UTF-8">
@@ -77,11 +37,11 @@ fclose($file2);
             justify-content:center;
         }
         #top{
-             color:#fff;
+            color:#fff;
             background-color:blue;
         }
         .center{
-text-align:center;
+         text-align:center;
         }
         </style>
     </head>
@@ -101,19 +61,64 @@ text-align:center;
             <td class="center">投票数</td>
         </tr>
 <?php  
+
+//1.  DB接続します
+try {
+  $pdo = new PDO('mysql:dbname=gs_f01_db06;charset=utf8;host=localhost','root','');
+} catch (PDOException $e) {
+  exit('dbError:'.$e->getMessage());
+}
+
+//２．データ登録SQL作成
+$stmt = $pdo->prepare("select * from selectedanime ");
+$status = $stmt->execute();
+
+//３．データ表示
+$view="";
+if($status==false) {
+    //execute（SQL実行時にエラーがある場合）
+  $error = $stmt->errorInfo();
+  exit("sqlError:".$error[2]);
+
+}else{
+  //Selectデータの数だけ自動でループしてくれる
+  while( $result = $stmt->fetch(PDO::FETCH_ASSOC)){ 
+	// $view .= "<p>".$result["animeID"]."-".$result["title"]."-".$result["year"]."</p>";
+	$title = $result["title"];
+	$year = $result["year"];
+	$animeID = $result["animeID"];
+
+	 $view .='<li class="anititle year';
+	 $view .=$year;
+	 $view .='">';
+	 $view .='<input type="checkbox" name="anime[]" value="';
+	 $view .=$animeID;
+	 $view .='">'; 
+	 $view .=$title;
+	 $view .='</li>';
+  }
+}
+
+$nameArray = array();
+$mailArray = array();
+$sexArray = array();
+$animeArray = array();
+$count = 0;
+
 $totalAnime= array();
 $manAnime=array();
 $womanAnime=array();
-   for($i=0;$i<count($nameArray);$i++){
-        $animeline = explode("/", $animeArray[$i]);
-            foreach($animeline as $value){
-                if($sexArray[$i] =="man"){$manAnime[] = $array[$value];}
-                if($sexArray[$i] =="woman"){$womanAnime[] = $array[$value];}
-            // $Aname[] = $array[$value];
-            $totalAnime[] =$array[$value];
-            }
-    // echo $nameArray[$i].",".$mailArray[$i].",".$sexArray[$i].",".implode("/",$Aname)."<br>";  
-   }
+
+for($i=0;$i<count($nameArray);$i++){
+    $animeline = explode("/", $animeArray[$i]);
+        foreach($animeline as $value){
+            if($sexArray[$i] =="man"){$manAnime[] = $array[$value];}
+            if($sexArray[$i] =="woman"){$womanAnime[] = $array[$value];}
+        // $Aname[] = $array[$value];
+        $totalAnime[] =$array[$value];
+        }
+// echo $nameArray[$i].",".$mailArray[$i].",".$sexArray[$i].",".implode("/",$Aname)."<br>";  
+}
     // var_dump($totalAnime);
 $totaldata = array_count_values($totalAnime);
 arsort($totaldata);

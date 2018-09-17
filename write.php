@@ -7,17 +7,38 @@ $animeToStr = "";
 $str = "";
 
 foreach($anime as $value){
-$animeToStr .= $value; 
-$animeToStr .= '/'; 
+    $animeToStr .= $value; 
+    $animeToStr .= '/'; 
 }
 $animeToStr = rtrim($animeToStr, '/');   
 
-$str = $name.",".$mail.",".$sex.",".$animeToStr;
-$file = fopen("data/data.csv","a");	
-flock($file, LOCK_EX);			
-fwrite($file, $str."\n");
-flock($file, LOCK_UN);			
-fclose($file);
+// DB 接続します
+try {
+  $pdo = new PDO('mysql:dbname=gs_f01_db06;charset=utf8;host=localhost','root','');
+} catch (PDOException $e) {
+  exit('dbError:'.$e->getMessage());
+}
+
+$sql ="INSERT INTO anime_post(id,name,mail,sex,anime,created_at) 
+VALUES (null,:a1,:a2,:a3,:a4,sysdate())";
+
+$stmt = $pdo->prepare($sql);
+$stmt->bindValue(':a1', $name, PDO::PARAM_STR);    //Integer（数値の場合 PDO::PARAM_INT)
+$stmt->bindValue(':a2', $mail, PDO::PARAM_STR);   //Integer（数値の場合 PDO::PARAM_INT)
+$stmt->bindValue(':a3', $sex, PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
+$stmt->bindValue(':a4', $animeToStr, PDO::PARAM_STR);
+$status = $stmt->execute();
+
+//４．データ登録処理後
+if($status==false){
+  //SQL実行時にエラーがある場合（エラーオブジェクト取得して表示）
+  $error = $stmt->errorInfo();
+  exit("sqlError:".$error[2]);
+}else{
+  //５．index.phpへリダイレクト
+//   header("location: index.php");
+}
+
 ?>
 
 
