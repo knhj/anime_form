@@ -1,3 +1,32 @@
+<?php
+//1.  DB接続します
+try {
+  $pdo = new PDO('mysql:dbname=gs_f01_db06;charset=utf8;host=localhost','root','');
+} catch (PDOException $e) {
+  exit('dbError:'.$e->getMessage());
+}
+
+//２．データ登録SQL作成
+$stmt = $pdo->prepare("select * from selectedanime ");
+$status = $stmt->execute();
+
+//３．データ表示
+$view="";
+if($status==false) {
+    //execute（SQL実行時にエラーがある場合）
+  $error = $stmt->errorInfo();
+  exit("sqlError:".$error[2]);
+
+}else{
+  //Selectデータの数だけ自動でループしてくれる
+  while( $result = $stmt->fetch(PDO::FETCH_ASSOC)){ 
+    $view .= "<p>".$result["animeID"]."-".$result["title"]."-".$result["year"]."</p>";
+  }
+}
+
+?>
+
+
 <html>
 <!DOCTYPE html>
 <html lang="ja">
@@ -96,34 +125,39 @@
 				</li>
 				<li class="checktitle">放送開始年をクリック後、好きなタイトルを選択してください。</li>
 				<li id="year2015" class="btn btn-primary">2015年</li><br>
+    			<div><?=$view?></div>
+
 <?php 
-$file = fopen('data/selectedanimes.csv', 'r');
-flock($file, LOCK_EX);			
-$is2016 = "true";
-$is2017 = "true";
-    if($file){
- 		while ($line = fgets($file)) {
-			   $splitedline = explode(",",$line);
-			   if($splitedline[7]== "2016"){
-					if($is2016 == "true"){
-						echo '<li id="year2016" class="btn btn-primary">2016年</li><br>';
-						 echo "\n";
-						$is2016 = "false";
-					}
-			   }
-			    if($splitedline[7]== "2017"){
-					if($is2017 == "true"){
-						echo '<li id="year2017" class="btn btn-primary">2017年</li><br>';
-						 echo "\n";
-						$is2017 = "false";
-					}
-			   }
-  			 echo ' <li class="anititle year'.$splitedline[7].'"><input type="checkbox" name="anime[]" value="'.$splitedline[3].'" >'.$splitedline[4].'</li>';
-                echo "\n";
-        }
-    }
-flock($file, LOCK_UN);			// ファイルロック解除
-fclose($file);
+
+
+
+// $file = fopen('data/selectedanimes.csv', 'r');
+// flock($file, LOCK_EX);			
+// $is2016 = "true";
+// $is2017 = "true";
+//     if($file){
+//  		while ($line = fgets($file)) {
+// 			   $splitedline = explode(",",$line);
+// 			   if($splitedline[7]== "2016"){
+// 					if($is2016 == "true"){
+// 						echo '<li id="year2016" class="btn btn-primary">2016年</li><br>';
+// 						 echo "\n";
+// 						$is2016 = "false";
+// 					}
+// 			   }
+// 			    if($splitedline[7]== "2017"){
+// 					if($is2017 == "true"){
+// 						echo '<li id="year2017" class="btn btn-primary">2017年</li><br>';
+// 						 echo "\n";
+// 						$is2017 = "false";
+// 					}
+// 			   }
+//   			 echo ' <li class="anititle year'.$splitedline[7].'"><input type="checkbox" name="anime[]" value="'.$splitedline[3].'" >'.$splitedline[4].'</li>';
+//                 echo "\n";
+//         }
+//     }
+// flock($file, LOCK_UN);			// ファイルロック解除
+// fclose($file);
 ?>
 
 			</ul>
