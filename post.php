@@ -12,6 +12,8 @@ $status = $stmt->execute();
 
 //３．データ表示
 $view="";
+$is2016 = "true";
+$is2017 = "true";
 if($status==false) {
     //execute（SQL実行時にエラーがある場合）
   $error = $stmt->errorInfo();
@@ -20,7 +22,32 @@ if($status==false) {
 }else{
   //Selectデータの数だけ自動でループしてくれる
   while( $result = $stmt->fetch(PDO::FETCH_ASSOC)){ 
-    $view .= "<p>".$result["animeID"]."-".$result["title"]."-".$result["year"]."</p>";
+	// $view .= "<p>".$result["animeID"]."-".$result["title"]."-".$result["year"]."</p>";
+	$title = $result["title"];
+	$year = $result["year"];
+	$animeID = $result["animeID"];
+
+ 	if($year== "2016"){
+					if($is2016 == "true"){
+						$view .= '<li id="year2016" class="btn btn-primary">2016年</li><br>';
+						$is2016 = "false";
+					}
+			   }
+	if($year == "2017"){
+					if($is2017 == "true"){
+						$view .= '<li id="year2017" class="btn btn-primary">2017年</li><br>';
+						$is2017 = "false";
+					}
+			   }
+
+	 $view .='<li class="anititle year';
+	 $view .=$year;
+	 $view .='">';
+	 $view .='<input type="checkbox" name="anime[]" value="';
+	 $view .=$animeID;
+	 $view .='">'; 
+	 $view .=$title;
+	 $view .='</li>';
   }
 }
 
@@ -125,7 +152,7 @@ if($status==false) {
 				</li>
 				<li class="checktitle">放送開始年をクリック後、好きなタイトルを選択してください。</li>
 				<li id="year2015" class="btn btn-primary">2015年</li><br>
-    			<div><?=$view?></div>
+    			<?=$view?>
 
 <?php 
 
