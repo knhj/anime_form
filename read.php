@@ -126,19 +126,19 @@ $MWrank = array();
 $i=0;
 foreach($mandata as $key=>$value){
     // echo "$key は $value 回出てきました<br>";
-$MWrank[$i][0] = $key;
-$MWrank[$i][1] = $value;
-$i++;
-if($i == 10){break;}
+    $MWrank[$i][0] = $key;
+    $MWrank[$i][1] = $value;
+    $i++;
+    if($i == 10){break;}
 }
 
 $i=0;
 foreach($womandata as $key=>$value){
-    // echo "$key は $value 回出てきました<br>";
-$MWrank[$i][2] = $key;
-$MWrank[$i][3] = $value;
-$i++;
-if($i == 10){break;}
+        // echo "$key は $value 回出てきました<br>";
+    $MWrank[$i][2] = $key;
+    $MWrank[$i][3] = $value;
+    $i++;
+    if($i == 10){break;}
 }
 //ここまでで[男アニメタイトル、票数、女アニメタイトル、票数]が要素の要素数が順位の配列ができる
 // var_dump($MWrank);
