@@ -3,14 +3,6 @@ $name = $_POST["name"];
 $mail = $_POST["mail"];
 $sex = $_POST["sex"];
 $anime = $_POST['anime'];
-$animeToStr = "";
-$str = "";
-
-foreach($anime as $value){
-    $animeToStr .= $value; 
-    $animeToStr .= '/'; 
-}
-$animeToStr = rtrim($animeToStr, '/');   
 
 // DB 接続します
 try {
@@ -19,15 +11,31 @@ try {
   exit('dbError:'.$e->getMessage());
 }
 
-$sql ="INSERT INTO anime_post(id,name,mail,sex,anime,created_at) 
-VALUES (null,:a1,:a2,:a3,:a4,sysdate())";
+$sql ="INSERT INTO anime_post(id,name,mail,sex,created_at) 
+VALUES (null,:a1,:a2,:a3,sysdate())";
 
 $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':a1', $name, PDO::PARAM_STR);    //Integer（数値の場合 PDO::PARAM_INT)
 $stmt->bindValue(':a2', $mail, PDO::PARAM_STR);   //Integer（数値の場合 PDO::PARAM_INT)
 $stmt->bindValue(':a3', $sex, PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
-$stmt->bindValue(':a4', $animeToStr, PDO::PARAM_STR);
 $status = $stmt->execute();
+
+
+$sql ="INSERT INTO posted_anime(post_id,anime_id) 
+VALUES (:b1,:b2)";
+$last_id = $pdo->lastInsertID('id');
+
+
+
+foreach($anime as $value){
+$stmt = $pdo->prepare($sql);
+$stmt->bindValue(':b1', $last_id, PDO::PARAM_STR);    //Integer（数値の場合 PDO::PARAM_INT)
+$stmt->bindValue(':b2', $value, PDO::PARAM_STR);   //Integer（数値の場合 PDO::PARAM_INT)
+$status = $stmt->execute();
+}
+
+
+
 
 //４．データ登録処理後
 if($status==false){
@@ -37,6 +45,9 @@ if($status==false){
 }else{
   //５．index.phpへリダイレクト
 //   header("location: index.php");
+
+// echo $last_id;
+// echo "\n";
 }
 
 ?>

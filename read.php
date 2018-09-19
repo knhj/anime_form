@@ -1,3 +1,37 @@
+<?php
+try {
+  $pdo = new PDO('mysql:dbname=gs_f01_db06;charset=utf8;host=localhost','root','');
+} catch (PDOException $e) {
+  exit('dbError:'.$e->getMessage());
+}
+
+//２．データ登録SQL作成
+$stmt = $pdo->prepare("select count(*) from anime_post");
+$status = $stmt->execute();
+
+//３．データ表示
+$MWrank = array();
+if($status==false) {
+    //execute（SQL実行時にエラーがある場合）
+  $error = $stmt->errorInfo();
+  exit("sqlError:".$error[2]);
+
+}else{
+  //Selectデータの数だけ自動でループしてくれる
+  while( $result = $stmt->fetch(PDO::FETCH_ASSOC)){ 
+	$goukei = $result["count(*)"];
+	
+  }
+}
+
+
+
+?>
+
+
+
+
+
 <html lang="ja">
     <head>
         <meta charset="UTF-8">
@@ -49,7 +83,7 @@
 
 
 <h1>アニメ人気ランキング</h1>
-<div class="sou">総投稿数:<?php echo $count;?></div>
+<div class="sou">総投稿数:<?php echo $goukei;?></div>
 
 <table class="flex">
     <tbody>
@@ -62,19 +96,13 @@
         </tr>
 <?php  
 
-//1.  DB接続します
-try {
-  $pdo = new PDO('mysql:dbname=gs_f01_db06;charset=utf8;host=localhost','root','');
-} catch (PDOException $e) {
-  exit('dbError:'.$e->getMessage());
-}
 
 //２．データ登録SQL作成
-$stmt = $pdo->prepare("select * from selectedanime ");
+$stmt = $pdo->prepare("select selectedanime.title,count(*) from posted_anime join selectedanime on selectedanime.animeID = posted_anime.anime_id join anime_post on anime_post.id = posted_anime.post_id  where anime_post.sex = 'man' group by posted_anime.anime_id order by count(*) desc limit 10");
 $status = $stmt->execute();
 
 //３．データ表示
-$view="";
+$MWrank = array();
 if($status==false) {
     //execute（SQL実行時にエラーがある場合）
   $error = $stmt->errorInfo();
@@ -82,71 +110,41 @@ if($status==false) {
 
 }else{
   //Selectデータの数だけ自動でループしてくれる
+  $i=0;
   while( $result = $stmt->fetch(PDO::FETCH_ASSOC)){ 
-	// $view .= "<p>".$result["animeID"]."-".$result["title"]."-".$result["year"]."</p>";
 	$title = $result["title"];
-	$year = $result["year"];
-	$animeID = $result["animeID"];
-
-	 $view .='<li class="anititle year';
-	 $view .=$year;
-	 $view .='">';
-	 $view .='<input type="checkbox" name="anime[]" value="';
-	 $view .=$animeID;
-	 $view .='">'; 
-	 $view .=$title;
-	 $view .='</li>';
+	$count = $result["count(*)"];
+    $MWrank[$i][0] = $title;
+    $MWrank[$i][1] = $count;
+    $i++;
+    
   }
 }
 
-$nameArray = array();
-$mailArray = array();
-$sexArray = array();
-$animeArray = array();
-$count = 0;
+//２．データ登録SQL作成
+$stmt = $pdo->prepare("select selectedanime.title,count(*) from posted_anime join selectedanime on selectedanime.animeID = posted_anime.anime_id join anime_post on anime_post.id = posted_anime.post_id  where anime_post.sex = 'woman' group by posted_anime.anime_id order by count(*) desc limit 10");
+$status = $stmt->execute();
 
-$totalAnime= array();
-$manAnime=array();
-$womanAnime=array();
+//３．データ表示
 
-for($i=0;$i<count($nameArray);$i++){
-    $animeline = explode("/", $animeArray[$i]);
-        foreach($animeline as $value){
-            if($sexArray[$i] =="man"){$manAnime[] = $array[$value];}
-            if($sexArray[$i] =="woman"){$womanAnime[] = $array[$value];}
-        // $Aname[] = $array[$value];
-        $totalAnime[] =$array[$value];
-        }
-// echo $nameArray[$i].",".$mailArray[$i].",".$sexArray[$i].",".implode("/",$Aname)."<br>";  
-}
-    // var_dump($totalAnime);
-$totaldata = array_count_values($totalAnime);
-arsort($totaldata);
-$mandata = array_count_values($manAnime);
-arsort($mandata);
-$womandata = array_count_values($womanAnime);
-arsort($womandata);
+if($status==false) {
+    //execute（SQL実行時にエラーがある場合）
+  $error = $stmt->errorInfo();
+  exit("sqlError:".$error[2]);
 
-$MWrank = array();
-$i=0;
-foreach($mandata as $key=>$value){
-    // echo "$key は $value 回出てきました<br>";
-    $MWrank[$i][0] = $key;
-    $MWrank[$i][1] = $value;
+}else{
+  //Selectデータの数だけ自動でループしてくれる
+  $i=0;
+  while( $result = $stmt->fetch(PDO::FETCH_ASSOC)){ 
+	$title = $result["title"];
+	$count = $result["count(*)"];
+    $MWrank[$i][2] = $title;
+    $MWrank[$i][3] = $count;
     $i++;
-    if($i == 10){break;}
+  }
 }
 
-$i=0;
-foreach($womandata as $key=>$value){
-        // echo "$key は $value 回出てきました<br>";
-    $MWrank[$i][2] = $key;
-    $MWrank[$i][3] = $value;
-    $i++;
-    if($i == 10){break;}
-}
 //ここまでで[男アニメタイトル、票数、女アニメタイトル、票数]が要素の要素数が順位の配列ができる
-// var_dump($MWrank);
 $i=0;
 foreach($MWrank as $value){
     $num = $i + 1;
