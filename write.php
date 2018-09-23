@@ -5,11 +5,14 @@ $sex = $_POST["sex"];
 $anime = $_POST['anime'];
 
 // DB 接続します
-try {
-  $pdo = new PDO('mysql:dbname=gs_f01_db06;charset=utf8;host=localhost','root','');
-} catch (PDOException $e) {
-  exit('dbError:'.$e->getMessage());
-}
+include('functions.php');
+$pdo = db_conn();
+
+// try {
+//   $pdo = new PDO('mysql:dbname=gs_f01_db06;charset=utf8;host=localhost','root','');
+// } catch (PDOException $e) {
+//   exit('dbError:'.$e->getMessage());
+// }
 
 $sql ="INSERT INTO anime_post(id,name,mail,sex,created_at) 
 VALUES (null,:a1,:a2,:a3,sysdate())";

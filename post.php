@@ -1,10 +1,14 @@
 <?php
 //1.  DB接続します
-try {
-  $pdo = new PDO('mysql:dbname=gs_f01_db06;charset=utf8;host=localhost','root','');
-} catch (PDOException $e) {
-  exit('dbError:'.$e->getMessage());
-}
+include('functions.php');
+$pdo = db_conn();
+
+
+// try {
+//   $pdo = new PDO('mysql:dbname=gs_f01_db06;charset=utf8;host=localhost','root','');
+// } catch (PDOException $e) {
+//   exit('dbError:'.$e->getMessage());
+// }
 
 //２．データ登録SQL作成
 $stmt = $pdo->prepare("select * from selectedanime ");
