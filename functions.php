@@ -12,7 +12,7 @@ function db_conn(){
 }
 
 // テーブル名
-// $table = 'gs_php03_table';
+ $table = 'anime_post';
 
 //SQL処理エラー
 function errorMsg($stmt){

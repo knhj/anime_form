@@ -3,7 +3,6 @@
 $id = $_GET['id'];
 // echo "GET:".$id;
 
-
 //1.  DB接続します
 include('functions.php');
 $pdo = db_conn();
@@ -26,10 +25,10 @@ if($status==false){
   $status2 = $stmt2->execute();
 
   $titles = array();
- while( $result2 = $stmt2->fetch(PDO::FETCH_ASSOC)){
-   $titles[] = $result2['title'];
-  //  var_dump($result2);
- }
+	while( $result2 = $stmt2->fetch(PDO::FETCH_ASSOC)){
+	$titles[] = $result2['title'];
+	//  var_dump($result2);
+	}
 
 //  var_dump($rs);
 //  echo "<br>";
@@ -59,11 +58,6 @@ if($status3==false) {
 	$year = $result3["year"];
 	$animeID = $result3["animeID"];
 
-
-
-
-
-
  	if($year== "2016"){
 					if($is2016 == "true"){
 						$view .= '<li id="year2016" class="btn btn-primary">2016年</li><br>';
@@ -83,8 +77,9 @@ if($status3==false) {
 	 $view .='<input type="checkbox" name="anime[]" value="';
 	 $view .=$animeID;
 	 if(in_array($title, $titles, true))
-	       {$view .='" checked>'; }
-	    else{ $view .='">'; }
+		{$view .='" checked>'; }
+	 else
+		{ $view .='">'; }
 	 $view .=$title;
 	 $view .='</li>';
   }
