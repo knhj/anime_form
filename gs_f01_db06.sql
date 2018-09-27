@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 2018 年 9 月 19 日 14:27
+-- Generation Time: 2018 年 9 月 27 日 13:26
 -- サーバのバージョン： 5.6.21
 -- PHP Version: 5.6.3
 
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `anime_post` (
   `mail` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `sex` varchar(5) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` datetime DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- テーブルのデータのダンプ `anime_post`
@@ -41,13 +41,12 @@ CREATE TABLE IF NOT EXISTS `anime_post` (
 INSERT INTO `anime_post` (`id`, `name`, `mail`, `sex`, `created_at`) VALUES
 (15, 'fff', 'fff.com', 'man', '2018-09-18 20:26:13'),
 (16, 'fffg', 'fff.cogm', 'man', '2018-09-18 20:28:28'),
-(17, 'fffgh', 'fff.cogmh', 'man', '2018-09-18 20:34:50'),
 (18, 'fffghf', 'fff.cogmhf', 'man', '2018-09-18 20:35:09'),
 (19, 'fffghfd', 'ffdf.cogmhf', 'man', '2018-09-18 20:35:27'),
-(20, 'fffgfd', 'ffdf.cgmhf', 'man', '2018-09-18 20:35:43'),
+(20, 'fffgfddd', 'ffdf.cgmhff', 'woman', '2018-09-18 20:35:43'),
 (21, 'ffgfd', 'ffdf.cghf', 'man', '2018-09-18 20:36:12'),
 (22, 'ffgf', 'ffdf.cgh', 'man', '2018-09-18 20:36:34'),
-(23, 'ffj', 'ffdf.gh', 'woman', '2018-09-18 20:45:25'),
+(23, 'ffj', 'ffdf.ghf', 'woman', '2018-09-18 20:45:25'),
 (24, 'ffjh', 'ffdf.ghh', 'woman', '2018-09-18 20:45:47'),
 (25, 'fjh', 'fff.ghh', 'woman', '2018-09-18 20:46:26'),
 (26, 'fh', 'fff.gh', 'woman', '2018-09-18 20:46:50'),
@@ -56,7 +55,9 @@ INSERT INTO `anime_post` (`id`, `name`, `mail`, `sex`, `created_at`) VALUES
 (29, 'fhpp', 'ff.ghpp', 'woman', '2018-09-18 20:47:55'),
 (30, 'hpp', 'ff.ghp', 'woman', '2018-09-18 20:48:26'),
 (31, 'ghgb', 'gbgg.vom', 'man', '2018-09-19 19:59:40'),
-(32, 'ghg', 'gbgg.vo', 'woman', '2018-09-19 19:59:49');
+(32, 'ghg', 'gbgg.vo', 'woman', '2018-09-19 19:59:49'),
+(33, 'test', 'test', 'man', '2018-09-22 15:03:40'),
+(34, 'ggg', 'lll', 'man', '2018-09-22 17:02:01');
 
 -- --------------------------------------------------------
 
@@ -87,6 +88,59 @@ INSERT INTO `gs_php02_table` (`id`, `name`, `email`, `detail`, `indate`, `age`) 
 (7, 'fff', 'fff', 'fff', '2018-09-15 16:48:05', 30),
 (8, 'hshs', 'hshs', 'hshshh', '2018-09-15 17:28:44', 40),
 (9, 'ggg', 'ttest1@gmail.com', 'atui-', '2017-05-26 15:18:10', 20);
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `gs_php03_table`
+--
+
+CREATE TABLE IF NOT EXISTS `gs_php03_table` (
+`id` int(12) NOT NULL,
+  `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `detail` text COLLATE utf8_unicode_ci,
+  `indate` datetime NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- テーブルのデータのダンプ `gs_php03_table`
+--
+
+INSERT INTO `gs_php03_table` (`id`, `name`, `email`, `detail`, `indate`) VALUES
+(2, 'yamasaki', 'yamasaki@gs.gs', 'test02', '2018-09-15 15:22:57'),
+(3, 'osgsss', 'osg@gs.gsss', 'test03ss', '2018-09-15 15:23:20'),
+(4, 'moritaっっs', 'morita@gs.gs', 'test04っs', '2018-09-15 15:23:48'),
+(5, 'kimura', 'kimura@gs.gs', 'test05', '2018-09-15 15:24:48'),
+(6, 'kamiyama', 'kamiyama@gs.gs', 'test06', '2018-09-15 16:12:26'),
+(7, 'kanou', 'kanou@gs.gs', 'test07', '2018-09-15 16:13:06'),
+(8, 'kosuge', 'kosuge@gs.gs', 'test08', '2018-09-15 16:17:04'),
+(9, 'iseki', 'iseki@gs.gs', 'test09', '2018-09-15 16:47:30'),
+(10, 'dd', 'dd', 'dd', '2018-09-22 15:32:28'),
+(11, 'dd', 'dd', 'ddd', '2018-09-22 15:32:36');
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `gs_user_table`
+--
+
+CREATE TABLE IF NOT EXISTS `gs_user_table` (
+`id` int(12) NOT NULL,
+  `name` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `lid` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `lpw` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `kanri_flg` int(1) DEFAULT NULL,
+  `life_flg` int(1) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- テーブルのデータのダンプ `gs_user_table`
+--
+
+INSERT INTO `gs_user_table` (`id`, `name`, `lid`, `lpw`, `kanri_flg`, `life_flg`) VALUES
+(3, 'fdfd', 'fdfd', 'ffdfd', 1, 1),
+(4, 'hhhh', 'hhh', 'hhh', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -123,19 +177,9 @@ INSERT INTO `posted_anime` (`post_id`, `anime_id`) VALUES
 (19, 'LrNfsLeRzB4'),
 (19, 'kUo2pH3C4kt'),
 (19, 'zqNJzDhYntv'),
-(20, 'kUo2pH3C4kt'),
-(20, 'zqNJzDhYntv'),
 (21, 'zqNJzDhYntv'),
 (22, 'zqNJzDhYntv'),
 (22, 'gjzju87bZ8U'),
-(23, 'qPYrVEGV6CS'),
-(23, 'oxcsZoLMHkG'),
-(23, 'vUgLk2ujykA'),
-(23, 'snKhpZaVGVj'),
-(23, 'JxGvhLF5MNy'),
-(23, 'ix3opPxu4de'),
-(23, 'E8yVxji683t'),
-(23, '2EZeRaoMfyo'),
 (24, 'oxcsZoLMHkG'),
 (24, 'Ht8AgZgswLs'),
 (24, 'vUgLk2ujykA'),
@@ -194,7 +238,27 @@ INSERT INTO `posted_anime` (`post_id`, `anime_id`) VALUES
 (32, 'bsQTdnxBRCg'),
 (32, '8Nxtr25dGEj'),
 (32, '6NtnUrNncmN'),
-(32, 'h9N6hv83FQY');
+(32, 'h9N6hv83FQY'),
+(33, '2qHNKcLyfrE'),
+(33, 'ssBi7GRkzJW'),
+(34, 'XQyVhRL2Um4'),
+(34, 'wygCjFghAkt'),
+(34, 'mE4RB76f6jh'),
+(35, 'HDJfna97L7u'),
+(23, 'qPYrVEGV6CS'),
+(23, 'oxcsZoLMHkG'),
+(23, 'tqRtvs6osFP'),
+(23, 'vUgLk2ujykA'),
+(23, 'snKhpZaVGVj'),
+(23, 'JxGvhLF5MNy'),
+(23, 'ix3opPxu4de'),
+(23, 'E8yVxji683t'),
+(23, '2EZeRaoMfyo'),
+(20, 'HDJfna97L7u'),
+(20, 'hgYXb3RXRmd'),
+(20, 'Sbx75rt3vWk'),
+(20, 'kUo2pH3C4kt'),
+(20, 'zqNJzDhYntv');
 
 -- --------------------------------------------------------
 
@@ -1061,6 +1125,18 @@ ALTER TABLE `gs_php02_table`
  ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `gs_php03_table`
+--
+ALTER TABLE `gs_php03_table`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gs_user_table`
+--
+ALTER TABLE `gs_user_table`
+ ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -1068,12 +1144,22 @@ ALTER TABLE `gs_php02_table`
 -- AUTO_INCREMENT for table `anime_post`
 --
 ALTER TABLE `anime_post`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=36;
 --
 -- AUTO_INCREMENT for table `gs_php02_table`
 --
 ALTER TABLE `gs_php02_table`
 MODIFY `id` int(12) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+--
+-- AUTO_INCREMENT for table `gs_php03_table`
+--
+ALTER TABLE `gs_php03_table`
+MODIFY `id` int(12) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
+--
+-- AUTO_INCREMENT for table `gs_user_table`
+--
+ALTER TABLE `gs_user_table`
+MODIFY `id` int(12) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
