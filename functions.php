@@ -13,6 +13,7 @@ function db_conn(){
 
 // テーブル名
  $table = 'anime_post';
+ $user_table = 'anime_user'; 
 
 //SQL処理エラー
 function errorMsg($stmt){
@@ -30,4 +31,25 @@ function h($str){
 }
 
 
+//SESSIONチェック＆リジェネレイト
+function chk_ssid(){
+  if(!isset($_SESSION['chk_ssid']) || $_SESSION['chk_ssid']!=session_id()){
+    exit('Login Error.');
+  }else{
+    session_regenerate_id(true);
+    $_SESSION['chk_ssid'] = session_id();
+  }
+}
+
+function chk_kanri_flg(){
+  if(!isset($_SESSION['kanri_flg']) || $_SESSION['kanri_flg'] == 0){
+    exit('You do not have access authority.');
+  }
+}
+
+
+
 ?>
+
+
+

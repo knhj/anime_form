@@ -1,63 +1,35 @@
 <?php
-// getで送信されたidを取得
-$id = $_GET['id'];
-// echo "GET:".$id;
-
 session_start();
 include('functions.php');
 $pdo = db_conn();
 chk_ssid();
 
-//２．データ登録SQL作成，指定したidのみ表示する
-$stmt = $pdo->prepare('select * from anime_post where id=:id');
-$stmt->bindValue(':id',$id, PDO::PARAM_INT);
-$status = $stmt->execute();
-
-//３．データ表示
-if($status==false){
-  // エラーのとき
-  errorMsg($stmt);
-}else{
-  // エラーでないとき
-  $rs = $stmt->fetch();
-
-  $stmt2 = $pdo->prepare('select selectedanime.title from selectedanime join posted_anime on posted_anime.anime_id = selectedanime.animeID where posted_anime.post_id = :id');
-  $stmt2->bindValue(':id',$id, PDO::PARAM_INT);
-  $status2 = $stmt2->execute();
-
-  $titles = array();
-	while( $result2 = $stmt2->fetch(PDO::FETCH_ASSOC)){
-	$titles[] = $result2['title'];
-	//  var_dump($result2);
-	}
-
-//  var_dump($rs);
-//  echo "<br>";
-//   var_dump($titles);
-
-  //$rs -> id | name  | mail  | sex | created_at |
-  //$titles ->array(選んだアニメ) 
-}
+// try {
+//   $pdo = new PDO('mysql:dbname=gs_f01_db06;charset=utf8;host=localhost','root','');
+// } catch (PDOException $e) {
+//   exit('dbError:'.$e->getMessage());
+// }
 
 //２．データ登録SQL作成
-$stmt3 = $pdo->prepare("select * from selectedanime ");
-$status3 = $stmt3->execute();
+$stmt = $pdo->prepare("select * from selectedanime ");
+$status = $stmt->execute();
 
 //３．データ表示
 $view="";
 $is2016 = "true";
 $is2017 = "true";
-if($status3==false) {
+if($status==false) {
     //execute（SQL実行時にエラーがある場合）
   $error = $stmt->errorInfo();
   exit("sqlError:".$error[2]);
 
 }else{
   //Selectデータの数だけ自動でループしてくれる
-  while( $result3 = $stmt3->fetch(PDO::FETCH_ASSOC)){ 
-	$title = $result3["title"];
-	$year = $result3["year"];
-	$animeID = $result3["animeID"];
+  while( $result = $stmt->fetch(PDO::FETCH_ASSOC)){ 
+	// $view .= "<p>".$result["animeID"]."-".$result["title"]."-".$result["year"]."</p>";
+	$title = $result["title"];
+	$year = $result["year"];
+	$animeID = $result["animeID"];
 
  	if($year== "2016"){
 					if($is2016 == "true"){
@@ -77,18 +49,16 @@ if($status3==false) {
 	 $view .='">';
 	 $view .='<input type="checkbox" name="anime[]" value="';
 	 $view .=$animeID;
-	 if(in_array($title, $titles, true))
-		{$view .='" checked>'; }
-	 else
-		{ $view .='">'; }
+	 $view .='">'; 
 	 $view .=$title;
 	 $view .='</li>';
   }
 }
 
-
 ?>
 
+
+<html>
 <!DOCTYPE html>
 <html lang="ja">
     <head>
@@ -96,7 +66,7 @@ if($status3==false) {
 		 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-        <title>アニメアンケート編集画面</title>
+        <title>アニメアンケート</title>
 		<style>
 		body{
 	        font-family: Roboto, "Yu Gothic Medium", "游ゴシック Medium", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", "メイリオ", sans-serif;
@@ -168,22 +138,22 @@ if($status3==false) {
 		</style>
 	</head>
 	<body style="padding: 50px;">
-	 <div class="navbar-header"><a class="navbar-brand" href="select.php">データ一覧</a></div>
+	 <div class="navbar-header"><a class="navbar-brand" href="select.php">投稿データ一覧</a></div>
 	<h1 class="text-center bg-primary text-light font-weight-bold display-4">好きなアニメアンケート</h1>
-		<form action="update.php" method="post">
+		<form action="insert.php" method="post">
 			<ul >
 				<li class="flex">
 				    <div class="cell1">名前:</div>
-					 <div class="cell2"><input class="bo" type="text" name="name" value= "<?= $rs["name"]?>"><div>
+					 <div class="cell2"><input class="bo" type="text" name="name"><div>
 				</li>
 				<li class="flex">
 			    	<div class="cell1">EMAIL:</div> 
-				    <div class="cell2"><input class="bo" type="text" name="mail" value= "<?= $rs["mail"]?>"></div>
+				    <div class="cell2"><input class="bo" type="text" name="mail"></div>
 				</li>
 				<li class="flex">
 			    	<div class="cell1">性別:</div>
-					<div class="cell2"><input type="radio" name="sex" value="man" <?php if ($rs["sex"]=="man" ){echo "checked";}?>>男／
-			    	<input class=”” type="radio" name="sex" value="woman" <?php if ($rs["sex"]=="woman" ){echo "checked";}?>>女</div>
+					<div class="cell2"><input type="radio" name="sex" value="man" >男／
+			    	<input class=”” type="radio" name="sex" value="woman" >女</div>
 				</li>
 				<li class="checktitle">放送開始年をクリック後、好きなタイトルを選択してください。</li>
 				<li id="year2015" class="btn btn-primary">2015年</li><br>
@@ -193,7 +163,6 @@ if($status3==false) {
 			<div class="cent">
 			<input class="btn btn-primary btn-lg" type="submit" value="送信">
 			</div>
-			 <input type="hidden" name="id" value="<?=$rs['id']?>">
 		</form>
 		
 
@@ -219,6 +188,3 @@ $('#year2017').click(function(){
  </body>
 
 </html>
-
-
-

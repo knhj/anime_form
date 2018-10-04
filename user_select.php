@@ -2,21 +2,15 @@
 //1.  DB接続します
 session_start();
 include('functions.php');
-$pdo = db_conn();
 chk_ssid();
+chk_kanri_flg();
+$pdo = db_conn();
 
 //２．データ登録SQL作成
-$stmt = $pdo->prepare('select * from anime_post');
+$stmt = $pdo->prepare('SELECT * FROM '.$user_table);
 $status = $stmt->execute();
 
 //３．データ表示
-$header = '';
-$header .= '<a class="navbar-brand" href="index.php">データ登録（投稿画面）</a>';
-if($_SESSION['kanri_flg'] ==1){
-  $header .=  '<a class="navbar-brand" href="user_select.php">ユーザー一覧</a>';
-}
-
-
 $view='';
 if($status==false){
   errorMsg($stmt);
@@ -24,11 +18,11 @@ if($status==false){
   //Selectデータの数だけ自動でループしてくれる
   while( $result = $stmt->fetch(PDO::FETCH_ASSOC)){
     $view .= '<p>';
-    $view .= '<a href="detail.php?id='.$result["id"].'">';  //更新ページへのaタグを作成
-    $view .= $result['name'].'['.$result['created_at'].']';
+    $view .= '<a href="user_detail.php?id='.$result['id'].'">';  //更新ページへのaタグを作成
+    $view .= $result['name'];
     $view .= '</a>';
     $view .= '　';
-    $view .= '<a href="delete.php?id='.$result["id"].'">';  //削除用aタグを作成
+    $view .= '<a href="user_delete.php?id='.$result['id'].'">';  //削除用aタグを作成
     $view .= '［削除］';
     $view .= '</a>';
     $view .= '</p>';
@@ -43,7 +37,7 @@ if($status==false){
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>管理画面表示</title>
+<title>アニメブックマークユーザー一覧表示</title>
 <link rel="stylesheet" href="css/range.css">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <style>div{padding: 10px;font-size:16px;}</style>
@@ -54,7 +48,8 @@ if($status==false){
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-      <?=$header?>
+      <a class="navbar-brand" href="user_index.php">ユーザーデータ登録</a>
+      <a class="navbar-brand" href="select.php">投稿一覧</a>
     </div>
   </nav>
 </header>

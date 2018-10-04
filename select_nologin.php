@@ -3,7 +3,7 @@
 session_start();
 include('functions.php');
 $pdo = db_conn();
-chk_ssid();
+// chk_ssid();
 
 //２．データ登録SQL作成
 $stmt = $pdo->prepare('select * from anime_post');
@@ -11,10 +11,11 @@ $status = $stmt->execute();
 
 //３．データ表示
 $header = '';
-$header .= '<a class="navbar-brand" href="index.php">データ登録（投稿画面）</a>';
-if($_SESSION['kanri_flg'] ==1){
-  $header .=  '<a class="navbar-brand" href="user_select.php">ユーザー一覧</a>';
-}
+// $header .= '<a class="navbar-brand" href="index.php">データ登録（投稿画面）</a>';
+// if($_SESSION['kanri_flg'] ==1){
+  // $header .=  '<a class="navbar-brand" href="user_select.php">ユーザー一覧</a>';
+// }
+$header .=  '<p class="navbar-brand">投稿一覧画面</p>';
 
 
 $view='';
@@ -24,13 +25,13 @@ if($status==false){
   //Selectデータの数だけ自動でループしてくれる
   while( $result = $stmt->fetch(PDO::FETCH_ASSOC)){
     $view .= '<p>';
-    $view .= '<a href="detail.php?id='.$result["id"].'">';  //更新ページへのaタグを作成
+    $view .= '<a href="detail_nologin.php?id='.$result["id"].'">';  //更新ページへのaタグを作成
     $view .= $result['name'].'['.$result['created_at'].']';
     $view .= '</a>';
-    $view .= '　';
-    $view .= '<a href="delete.php?id='.$result["id"].'">';  //削除用aタグを作成
-    $view .= '［削除］';
-    $view .= '</a>';
+    // $view .= '　';
+    // $view .= '<a href="delete.php?id='.$result["id"].'">';  //削除用aタグを作成
+    // $view .= '［削除］';
+    // $view .= '</a>';
     $view .= '</p>';
   }
 }
